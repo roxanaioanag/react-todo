@@ -3,8 +3,9 @@ import _ from 'lodash';
 
 function TableBody(props) {
 
-   const renderCell = (item, column) => {   
-             return _.get(item, column.path);
+    const renderCell = (item, column) => {   
+        if (column.content)   return column.content(item);
+                 return _.get(item, column.path);
     }
 
     const  createKey = (item, column) => {

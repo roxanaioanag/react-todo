@@ -17,9 +17,6 @@ export async function createTodo(todo) {
         body: JSON.stringify(todo)
     }; 
 
-    console.log('body', requestOptions.body);
-    const response = await fetch('https://dolphin-app-nwlk3.ondigitalocean.app/api/Todo/create', requestOptions);
-    const data = await response.json();
+    return await fetch('https://dolphin-app-nwlk3.ondigitalocean.app/api/Todo/create', requestOptions);
 
-    return data;
 }

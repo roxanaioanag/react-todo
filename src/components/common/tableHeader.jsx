@@ -5,7 +5,7 @@ function TableHeader(props) {
         <thead>
             <tr>
                 {props.columns.map(column => (
-                    <th key={column.path}>
+                    <th key={column.path || column.key}>
                         {column.label}
                     </th>
                 ))}

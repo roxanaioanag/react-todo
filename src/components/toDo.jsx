@@ -13,13 +13,19 @@ function ToDo(props) {
   const [show, setShow] = useState(false);
   const [data, setData] = useState({});
 
-  const handleClose = () => setShow(false);
+  const dataFetch = async () => {
+   
+    const data = await getTodoList();
+    setTodo(data);
+   
+  };
+
+
+  const handleClose = () => setShow(false); 
   const handleShow = () => setShow(true);
   
   const handleChange = (input) => {
 
-    
-    console.log('to do data', input.value);
     if (input.name === 'title')
       data.title = input.value;
     else if (input.name === 'description')
@@ -27,38 +33,24 @@ function ToDo(props) {
     
     setData(data);
 
-    /*
-
-    setTodo(todo => ({
-         ...todo,
-         ...updatedValue
-    }));*/
-    console.log('data',data);
   }
 
-  const handleSubmit = async (e) => {
+  const handleSubmit =  async (e) => {
     e.preventDefault();
-
-    console.log('handle Submit data', data);
     await createTodo(data);
+    dataFetch(); 
   }
-
+ 
 
   useEffect(() => {
-    
-    const dataFetch = async () => {
-      const data = await getTodoList();
-      setTodo(data);
-    };
-
     dataFetch();
   }, []);
 
     return (
       <div className="container">
              <ToDoTable
-          todo={todo} />
-         <button type="button" className='btn btn-primary' onClick={handleShow}> show Modal </button>
+                   todo={todo} />
+        <button type="button" className='btn btn-primary' onClick={handleShow}> Add Todo</button>
         <ModalDialog
           show={show}
           onHide={handleClose}

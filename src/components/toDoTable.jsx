@@ -8,9 +8,12 @@ function ToDoTable(props) {
         { path: 'updated', label: 'Updated' },
         { path: 'dueBy', label: 'DueBy' },
         { path: 'completed', label: 'Completed' },
-        { key: 'view', content: movie =>  <button className='btn btn-secondary btn-sm' > View</button> },
-        { key: 'edit', content: movie =>  <button className='btn btn-primary btn-sm' > Edit</button> },
-        { key: 'delete', content: movie =>  <button className='btn btn-danger btn-sm' > Delete</button> },
+        { key: 'view', content: todo =>  <button className='btn btn-secondary btn-sm'>View</button> },
+        { key: 'edit', content: todo =>  <button className='btn btn-primary btn-sm'>Edit</button> },
+       {
+           key: 'delete', content: todo => <button className='btn btn-danger btn-sm'
+           onClick={() => props.onShow({todo})}>Delete</button>
+       }
        
     ];
 

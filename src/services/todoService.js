@@ -20,3 +20,10 @@ export async function createTodo(todo) {
     return await fetch('https://dolphin-app-nwlk3.ondigitalocean.app/api/Todo/create', requestOptions);
 
 }
+
+export async function deleteTodo(todo) {
+
+    return await fetch(`https://dolphin-app-nwlk3.ondigitalocean.app/api/Todo/delete/${todo}`, {  method: "DELETE"});
+
+
+}

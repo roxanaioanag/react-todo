@@ -1,10 +1,9 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
-import { getTodoList, createTodo, deleteTodo } from '../services/todoService';
+import { getTodoList, deleteTodo } from '../services/todoService';
 import ToDoTable from './toDoTable';
-import ModalDelete from './common/modalDelete';
 import ModalDialog from './common/modalDialog';
-
+import AddForm from './addForm';
 
 
 function ToDo(props) {
@@ -33,9 +32,7 @@ function ToDo(props) {
 
   }
 
-  const handleSubmit =  async (e) => {
-    e.preventDefault();
-    await createTodo(data);
+  const handleSubmit =  async () => {
     dataFetch(); 
   }
   const handleShowDel = todo => {
@@ -73,14 +70,17 @@ function ToDo(props) {
         <ModalDialog
           show={showAdd}
           onHide={() => setShowAdd(false)}
-          onChange={handleChange}
-          onSubmit={handleSubmit}
+          title='Create Todo'
+          children={<AddForm onSubmit={handleSubmit} onClick={() => setShowAdd(false)} />}
+          btnVisible={false}
         />
-        <ModalDelete
+        <ModalDialog
           show={showDel}
           onHide={() => setShowDel(false)}
           onDelete={handleDelete}
-        
+          title='Delete Todo'
+          children = 'Are you sure you want to delete Todo?'
+          btnVisible={true}
         />
         
    

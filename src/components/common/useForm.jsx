@@ -57,15 +57,16 @@ function useForm(props) {
         );
     };
 
-    const renderInput = ({ label, name, type = "text" }) => {
+    const renderInput = ({ label, name, type = "text" , read='' }) => {
         return (
             <Input
                 type={type}
                 name={name}
-                value={data[name]}
+                value={data[name] || ""}
                 label={label}
                 onChange={handleChange}
                 error={error[name]}
+                readOnly={read ? true : false}
             />
         );
     };

@@ -16,7 +16,7 @@ function ModalDialog(props) {
           {props.children}
         </Modal.Body>
         <Modal.Footer>
-        { props.btnVisible ? <Button variant="primary" onClick={ props.onDelete}>Save</Button> : <></>}
+        { props.btnVisible ? <Button variant="primary" onClick={ props.onAction}>Save</Button> : <></>}
           <Button variant="danger" onClick={props.onHide}>Close</Button>
         </Modal.Footer>
     </Modal>

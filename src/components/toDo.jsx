@@ -1,9 +1,11 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
-import { getTodoList, deleteTodo } from '../services/todoService';
+import { getTodoList, deleteTodo, editTodo, getTodo } from '../services/todoService';
 import ToDoTable from './toDoTable';
 import ModalDialog from './common/modalDialog';
 import AddForm from './addForm';
+import ViewForm from './viewForm';
+import EditForm from './editForm';
 
 
 function ToDo(props) {
@@ -11,9 +13,10 @@ function ToDo(props) {
   const [todo, setTodo] = useState([]);
   const [showAdd, setShowAdd] = useState(false);
   const [showDel, setShowDel] = useState(false);
+  const [showView, setShowView] = useState(false); 
+  const [showEdit, setShowEdit] = useState(false);
   const [data, setData] = useState({});
-  const [to, setTo] = useState({});
-
+ 
   const dataFetch = async () => {
    
     const data = await getTodoList();
@@ -21,29 +24,32 @@ function ToDo(props) {
    
   }; 
   
-  const handleChange = (input) => {
-
-    if (input.name === 'title')
-      data.title = input.value;
-    else if (input.name === 'description')
-      data.description = input.value;
-    
-    setData(data);
+  const handleView = async (todo) => {
+    const todo_id = await getTodo(todo.todo.id);
+    setData(todo_id);
+    setShowView(true);
 
   }
+
+  const handleEdit = async (todo) => {
+    const todo_id = await getTodo(todo.todo.id);
+    setData(todo_id);
+    setShowEdit(true);
+
+   }
+
+  const handleShowDel = todo => {
+    setShowDel(true);
+    setData(todo);
+   }
 
   const handleSubmit =  async () => {
     dataFetch(); 
   }
-  const handleShowDel = todo => {
-    setShowDel(true);
-    setTo(todo);
-   }
-
   const handleDelete = async () => {
        
     try {
-        await deleteTodo(to.todo.id);
+        await deleteTodo(data.todo.id);
     }
     catch (ex)
     {
@@ -52,7 +58,16 @@ function ToDo(props) {
     }
     dataFetch();
     setShowDel(false);
-};
+  };
+  
+  const handleSave = async () => {
+    
+  dataFetch();
+ // setShowEdit(false);
+
+
+    
+  }
 
  
 
@@ -64,7 +79,9 @@ function ToDo(props) {
       <div className="container">
         <ToDoTable
           todo={todo}
-          onShow={handleShowDel}
+          onView={handleView}
+          onDelete={handleShowDel}
+          onEdit={handleEdit}
         />
         <button type="button" className='btn btn-primary' onClick={() => setShowAdd(true)}> Add Todo</button>
         <ModalDialog
@@ -77,11 +94,24 @@ function ToDo(props) {
         <ModalDialog
           show={showDel}
           onHide={() => setShowDel(false)}
-          onDelete={handleDelete}
+          onAction={handleDelete}
           title='Delete Todo'
           children = 'Are you sure you want to delete Todo?'
           btnVisible={true}
         />
+         <ModalDialog
+          show={showView}
+          onHide={() => setShowView(false)}
+          title='View Todo'
+          children={<ViewForm data={data} onClick={() => setShowAdd(false)} read={true} />}
+          btnVisible={false}
+        />
+         <ModalDialog
+          show={showEdit}
+          onHide={() => setShowEdit(false)}
+          title='Edit Todo'
+          children={<EditForm onSubmit={handleSave} data={data} onClick={() => setShowEdit(false)} />}
+          />
         
    
       </div>

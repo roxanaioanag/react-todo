@@ -41,6 +41,24 @@ export async function editTodo(todo) {
 }
 
 
+export async function completeTodo(todo) {
+
+    const requestOptions = {
+        method: 'POST',
+        headers: {
+            'accept': '*/*',
+            },
+        body:''
+    }; 
+
+    return await fetch(config.apiTodo + `complete/${todo}`, requestOptions);
+
+
+
+}
+
+
+
 export async function deleteTodo(todo) {
 
     return await fetch(config.apiTodo + `delete/${todo}`, {  method: "DELETE"});

@@ -7,7 +7,11 @@ function ToDoTable(props) {
         { path: 'title', label: 'Title' },
         { path: 'updated', label: 'Updated' },
         { path: 'dueBy', label: 'DueBy' },
-        { path: 'completed', label: 'Completed' },
+        { path: 'completed', label: 'Completed'},
+       {
+           key: 'complete', content: todo => <button disabled={todo.completed } className='btn btn-success btn-sm'
+            onClick={() => { props.onComplete({ todo }) }}>Completed</button>
+       },
        {
            key: 'view', content: todo => <button className='btn btn-secondary btn-sm'
                onClick={() => { props.onView({ todo }) }}>View</button>

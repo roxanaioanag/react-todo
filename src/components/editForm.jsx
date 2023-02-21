@@ -5,6 +5,7 @@ import useForm from './common/useForm';
 import { editTodo, getTodo } from '../services/todoService';
 import { useEffect } from 'react';
 
+
 function EditForm(props) {
 
     const [data, setData] = useState({
@@ -21,13 +22,13 @@ function EditForm(props) {
 
     const rule = {
         schema: Joi.object({
-            id: Joi.string().label('Id'),
-            created: Joi.string().label('Created'),
-            updated: Joi.string().label('Updated'),
+            id: Joi.string().allow("").label('Id'),
+            created: Joi.string().allow("").label('Created'),
+            updated: Joi.string().allow("").label('Updated'),
             title: Joi.string().min(1).label('Title'),
             description: Joi.string().label('Description'),
             dueBy: Joi.date().allow(null).label('DueBy'),
-            completed: Joi.boolean().label('Completed')
+            completed: Joi.boolean().optional().label('Completed')
         }),
         doSubmit: async () => {
             await editTodo(data);
@@ -55,12 +56,10 @@ function EditForm(props) {
     return (
         <div>
             <form onSubmit={handleSubmit}>
-                {renderInput({ label: 'Created', name: 'created' })}
-                {renderInput({ label: 'Updated', name: 'updated'})}
+                
                 {renderInput({ label: 'Title', name: 'title'})}
-                {renderInput({ label: 'Description', name: 'description'})}
-                {renderInput({ label: 'DueBy', name: 'dueBy'})}
-                {renderInput({ label: 'Completed', name: 'completed'})}
+                {renderInput({ label: 'Description', name: 'description' })}
+                {renderInput({ label: 'DueBy', name: 'dueBy' , type:'datetime-local'})}
                 {renderButton("Save")}
             </form>
         </div>

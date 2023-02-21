@@ -1,6 +1,6 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
-import { getTodoList, deleteTodo, editTodo, getTodo } from '../services/todoService';
+import { getTodoList, deleteTodo, completeTodo, getTodo } from '../services/todoService';
 import ToDoTable from './toDoTable';
 import ModalDialog from './common/modalDialog';
 import AddForm from './addForm';
@@ -8,7 +8,7 @@ import ViewForm from './viewForm';
 import EditForm from './editForm';
 
 
-function ToDo(props) {
+function ToDo() {
 
   const [todo, setTodo] = useState([]);
   const [showAdd, setShowAdd] = useState(false);
@@ -38,6 +38,22 @@ function ToDo(props) {
 
    }
 
+  const handleComplete = async (todo) => {
+    
+    try {
+      if (!todo.todo.completed)
+        await completeTodo(todo.todo.id);
+      
+    }
+    catch (ex)
+    {
+        if (ex.response && ex.response.status === 400)
+            console.log('Todo already completed');
+    }
+    dataFetch();
+  
+  }
+  
   const handleShowDel = todo => {
     setShowDel(true);
     setData(todo);
@@ -63,10 +79,7 @@ function ToDo(props) {
   const handleSave = async () => {
     
   dataFetch();
- // setShowEdit(false);
-
-
-    
+   
   }
 
  
@@ -82,6 +95,7 @@ function ToDo(props) {
           onView={handleView}
           onDelete={handleShowDel}
           onEdit={handleEdit}
+          onComplete={handleComplete}
         />
         <button type="button" className='btn btn-primary' onClick={() => setShowAdd(true)}> Add Todo</button>
         <ModalDialog

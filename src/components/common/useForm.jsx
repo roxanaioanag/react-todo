@@ -14,6 +14,7 @@ function useForm(props) {
         for (let item of error?.details) {
           errors[item?.path[0]] = item?.message;
         }
+
         return errors;
     }
 
@@ -24,6 +25,7 @@ function useForm(props) {
         });
         const valueObject = { [name]: value };
         const { error } = propertySchema?.validate(valueObject);
+      
         return error ? error?.details[0]?.message : null;
 
     }
@@ -52,17 +54,18 @@ function useForm(props) {
     };
 
     const renderButton = (label) => {
+        
         return (
             <button disabled={validation() === null ? false : true} className="btn btn-primary mt-4 w-100" type='submit' onClick={handleClick}>{label}</button>
         );
     };
 
-    const renderInput = ({ label, name, type = "text" , read='' }) => {
+    const renderInput = ({ label, name, type = "text", read = '' }) => {     
         return (
             <Input
                 type={type}
                 name={name}
-                value={data[name] || ""}
+                value={data[name] === null ? ""  : data[name] }
                 label={label}
                 onChange={handleChange}
                 error={error[name]}
@@ -71,11 +74,12 @@ function useForm(props) {
         );
     };
 
+
     return {
         renderInput,
         renderButton,
         handleSubmit
-        
+         
     };
 }
 

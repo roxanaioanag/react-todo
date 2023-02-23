@@ -9,20 +9,21 @@ function ToDoTable(props) {
         { path: 'dueBy', label: 'DueBy' },
         { path: 'completed', label: 'Completed'},
        {
-           key: 'complete', content: todo => <button disabled={todo.completed } className='btn btn-success btn-sm'
-            onClick={() => { props.onComplete({ todo }) }}>Completed</button>
+           label: 'Complete',
+           key: 'complete', content: todo => <button className='btn'
+               onClick={() => { props.onComplete({ todo }) }}><i className={todo.completed ? 'bi bi-check-circle-fill' : 'bi bi-check-circle'}></i></button>
        },
-       {
-           key: 'view', content: todo => <button className='btn btn-secondary btn-sm'
-               onClick={() => { props.onView({ todo }) }}>View</button>
+       {   label: 'View',
+           key: 'view', content: todo => <button className='btn'
+               onClick={() => { props.onView({ todo }) }}><i className='bi bi-card-list'></i></button>
        },
-       {
-           key: 'edit', content: todo => <button className='btn btn-primary btn-sm'
-           onClick={() => props.onEdit({todo})}>Edit</button>
+       {   label: 'Edit',
+           key: 'edit', content: todo => <button className='btn'
+           onClick={() => props.onEdit({todo})}><i className='bi bi-pencil-square'></i></button>
        },
-       {
-           key: 'delete', content: todo => <button className='btn btn-danger btn-sm'
-           onClick={() => props.onDelete({todo})}>Delete</button>
+       {   label: 'Delete',
+           key: 'delete', content: todo => <button className='btn'
+           onClick={() => props.onDelete({todo})}><i className="bi bi-trash"></i></button>
        }
        
     ];

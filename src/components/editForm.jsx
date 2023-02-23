@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { useState } from 'react';
 import Joi from "joi";
 import useForm from './common/useForm';
@@ -42,13 +42,14 @@ function EditForm(props) {
        
     };
 
-    const getData = async () => {
+    const getData = useCallback(async () => {
         const todo = await getTodo(props.data.id);
         setData(todo);
-    }
+    }, [props.data.id]);
+
     useEffect(() => {
         getData();
-      }, []);
+      }, [getData]);
     
 
     const { renderInput, renderButton, handleSubmit } = useForm(rule);

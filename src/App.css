@@ -1,38 +1,86 @@
-.App {
+
+
+.App{
+  min-height: 100vh;
+  max-width: 1200px;
+  margin: auto;
+  padding: 10px 10px;
+}
+
+header{
+  min-height: 70px;
+  padding: 15px;
+  margin-bottom: 70px;
+  background-color: #FFFFFF;
+  border-radius: 5px;
+  box-shadow: var(--box-shadow);
+}
+
+header .logo{
+  display: flex;
+  align-items: center;
+}
+
+header .logo img{
+  max-width: 60px;
+  cursor: pointer;
+}
+
+header .logo span{
+  font-size: 22px;
+  margin-left: 7px;
+  cursor: pointer;
+  color: #525252;
+}
+
+.showTodo{
+  padding: 20px 15px;
+  border-radius: 5px;
+  background-color: #FFFFFF;
+  margin: 20px auto;
+  box-shadow: var(--box-shadow);
+}
+
+.showTodoBtn{
+  display:flex;
+  justify-content: center;
+  border: none;
+  padding: 5px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-bottom: 10px;
+  font-size: 18px;
+}
+
+
+i.bi-pencil-square{
+  font-size: 18px;
+  color: #1363DF;
+  cursor: pointer;
+}
+
+i.bi-trash{
+  font-size: 18px;
+  color: #D82148;
+  cursor: pointer;
+}
+
+i.bi-card-list{
+  font-size: 18px;
+  color: #15a708;
+  cursor: pointer;
+}
+
+
+th {
+  text-align: center;
+  background: rgb(32, 31, 31);
+  position: sticky;
+  top: 0; 
+  box-shadow: 0 2px 2px -1px rgba(0, 0, 0, 0.4);
+}
+
+td {
   text-align: center;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}

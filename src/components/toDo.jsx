@@ -1,11 +1,11 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
-import { getTodoList, deleteTodo, completeTodo, getTodo } from '../services/todoService';
 import ToDoTable from './toDoTable';
 import ModalDialog from './common/modalDialog';
 import AddForm from './addForm';
 import ViewForm from './viewForm';
 import EditForm from './editForm';
+import { getTodoList, deleteTodo, completeTodo, getTodo } from '../services/todoService';
 
 
 function ToDo() {
@@ -69,8 +69,8 @@ function ToDo() {
     }
     catch (ex)
     {
-        if (ex.response && ex.response.status === 404)
-            console.log('This todo has already been deleted');
+        if (ex.response && ex.response.status === 400)
+            console.log('Bad request');
     }
     dataFetch();
     setShowDel(false);
@@ -89,7 +89,11 @@ function ToDo() {
   }, []);
 
     return (
-      <div className="container">
+      <section className='showTodo'>
+        <section className='showTodoBtn'>
+          <button type="button" className='btn btn-primary' onClick={() => setShowAdd(true)}> Add Todo</button>
+        </section>
+       
         <ToDoTable
           todo={todo}
           onView={handleView}
@@ -97,7 +101,6 @@ function ToDo() {
           onEdit={handleEdit}
           onComplete={handleComplete}
         />
-        <button type="button" className='btn btn-primary' onClick={() => setShowAdd(true)}> Add Todo</button>
         <ModalDialog
           show={showAdd}
           onHide={() => setShowAdd(false)}
@@ -126,9 +129,7 @@ function ToDo() {
           title='Edit Todo'
           children={<EditForm onSubmit={handleSave} data={data} onClick={() => setShowEdit(false)} />}
           />
-        
-   
-      </div>
+      </section>
        
     );
 }

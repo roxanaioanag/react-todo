@@ -1,14 +1,14 @@
-import React, { useCallback } from 'react';
+import React from 'react';
 import { useState } from 'react';
 import Joi from "joi";
 import useForm from './common/useForm';
-import { editTodo, getTodo } from '../services/todoService';
+import { editTodo } from '../services/todoService';
 import { useEffect } from 'react';
 
 
-function EditForm(props) {
+function EditForm({data, onSubmit, onClick}) {
 
-    const [data, setData] = useState({
+    const [todo, setTodo] = useState({
         id: "",
         created: "",
         updated: "",
@@ -31,25 +31,21 @@ function EditForm(props) {
             completed: Joi.boolean().optional().label('Completed')
         }),
         doSubmit: async () => {
-            await editTodo(data);
-            props.onSubmit();
+            await editTodo(todo);
+            onSubmit();
           },
-        data,
-        setData,
+        todo,
+        setTodo,
         error,
         setError,
-        handleClick : props.onClick
+        handleClick : onClick
        
     };
 
-    const getData = useCallback(async () => {
-        const todo = await getTodo(props.data.id);
-        setData(todo);
-    }, [props.data.id]);
 
     useEffect(() => {
-        getData();
-      }, [getData]);
+        setTodo(data);
+      }, [data]);
     
 
     const { renderInput, renderButton, handleSubmit } = useForm(rule);

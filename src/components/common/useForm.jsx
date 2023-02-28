@@ -2,12 +2,12 @@ import React from 'react';
 import Joi from "joi";
 import Input from './input';
 
-function useForm(props) {
-    const { schema, doSubmit, data, setData, error, setError, handleClick } = props;
+function useForm({ schema, doSubmit, todo, setTodo, error, setError, handleClick }) {
+    
 
     const validation = () => {
         const options = { abortEarly: false };
-        const { error } = schema?.validate(data, options);
+        const { error } = schema?.validate(todo, options);
         if (!error) return null;
     
         const errors = {};
@@ -49,7 +49,7 @@ function useForm(props) {
         
         setError(errors);
      
-        setData({ ...data, [input.name]: input.value });
+        setTodo({ ...todo, [input.name]: input.value });
       
     };
 
@@ -65,7 +65,7 @@ function useForm(props) {
             <Input
                 type={type}
                 name={name}
-                value={data[name] === null ? ""  : data[name] }
+                value={todo[name] === null ? ""  : todo[name] }
                 label={label}
                 onChange={handleChange}
                 error={error[name]}

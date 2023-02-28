@@ -4,9 +4,9 @@ import Joi from "joi";
 import useForm from './common/useForm';
 import { createTodo } from '../services/todoService';
 
-function AddForm(props) {
+function AddForm({onSubmit, onClick}) {
    
-    const [data, setData] = useState({
+    const [todo, setTodo] = useState({
         title: "",
         description: ""
     });
@@ -20,14 +20,14 @@ function AddForm(props) {
             description: Joi.string().label('Description')
         }),
         doSubmit: async () => {
-            await createTodo(data);
-            props.onSubmit();
+            await createTodo(todo);
+            onSubmit();
           },
-        data,
-        setData,
+        todo,
+        setTodo,
         error,
         setError,
-        handleClick : props.onClick
+        handleClick : onClick
        
     };
 

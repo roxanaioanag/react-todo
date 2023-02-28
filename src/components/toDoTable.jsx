@@ -1,7 +1,7 @@
 import React from 'react';
 import Table from './common/table';
 
-function ToDoTable(props) {
+function ToDoTable({todo, onComplete, onView, onEdit, onDelete}) {
 
    const columns = [
         { path: 'title', label: 'Title' },
@@ -10,26 +10,26 @@ function ToDoTable(props) {
         { path: 'completed', label: 'Completed'},
        {
            label: 'Complete',
-           key: 'complete', content: todo => <button className='btn'
-               onClick={() => { props.onComplete({ todo }) }}><i className={todo.completed ? 'bi bi-check-circle-fill' : 'bi bi-check-circle'}></i></button>
+           key: 'complete', content: todo => 
+               <i onClick={() => { onComplete({ todo }) }} className={todo.completed ? 'bi bi-check-circle-fill' : 'bi bi-check-circle'}></i>
        },
        {   label: 'View',
-           key: 'view', content: todo => <button className='btn'
-               onClick={() => { props.onView({ todo }) }}><i className='bi bi-card-list'></i></button>
+           key: 'view',
+           content: todo => <i onClick={() => { onView({ todo }) }} className='bi bi-card-list'></i>
        },
        {   label: 'Edit',
-           key: 'edit', content: todo => <button className='btn'
-           onClick={() => props.onEdit({todo})}><i className='bi bi-pencil-square'></i></button>
+           key: 'edit',
+           content: todo => <i onClick={() => onEdit({ todo })} className='bi bi-pencil-square'></i>
        },
        {   label: 'Delete',
-           key: 'delete', content: todo => <button className='btn'
-           onClick={() => props.onDelete({todo})}><i className="bi bi-trash"></i></button>
+           key: 'delete',
+           content: todo => <i onClick={() => onDelete({ todo })} className="bi bi-trash"></i>
        }
        
     ];
 
     return (
-        <Table columns={columns} data={props.todo}/>
+        <Table columns={columns} data={todo}/>
     );
 }
 

@@ -1,12 +1,14 @@
 import React from 'react';
 import _ from 'lodash';
 
-function TableBody(props) {
+function TableBody({ data, columns }) { 
 
     const renderCell = (item, column) => {   
+   
         if (column.content) return column.content(item);
-        
-            return typeof (_.get(item, column.path)) === 'boolean' ? _.get(item, column.path).toString() : _.get(item, column.path);
+       
+       
+        return typeof (_.get(item, column.path)) === 'boolean' ? _.get(item, column.path).toString() : _.get(item, column.path);
     }
 
     const  createKey = (item, column) => {
@@ -14,7 +16,7 @@ function TableBody(props) {
         return item.id + (column.path || column.key);
     }
 
-    const { data, columns } = props;
+   
     return (
         <tbody>
             {data.map(item =>

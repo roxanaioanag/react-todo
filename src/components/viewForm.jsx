@@ -2,12 +2,11 @@ import React from 'react';
 import { useState } from 'react';
 import Joi from "joi";
 import useForm from './common/useForm';
-import { getTodo } from '../services/todoService';
 import { useEffect } from 'react';
 
-function ViewForm(props) {
+function ViewForm({data, read, onClick}) {
 
-    const [data, setData] = useState({
+    const [todo, setTodo] = useState({
         id: "",
         created: "",
         updated: "",
@@ -32,34 +31,31 @@ function ViewForm(props) {
         doSubmit: async () => {
           
           },
-        data,
-        setData,
+        todo,
+        setTodo,
         error,
         setError,
-        handleClick : props.onClick
+        handleClick : onClick
        
     };
+   
 
-    const getData = async () => {
-        const todo = await getTodo(props.data.id);
-        setData(todo);
-    }
     useEffect(() => {
-        getData();
-      }, []);
-    
+        setTodo(data);
+    }, [data]);
+     
 
     const { renderInput} = useForm(rule);
 
     return (
         <div>
             <form >
-                {renderInput({ label: 'Created', name: 'created', read: props.read })}
-                {renderInput({ label: 'Updated', name: 'updated', read: props.read})}
-                {renderInput({ label: 'Title', name: 'title', read: props.read})}
-                {renderInput({ label: 'Description', name: 'description', read: props.read})}
-                {renderInput({ label: 'DueBy', name: 'dueBy', read: props.read})}
-                {renderInput({ label: 'Completed', name: 'completed', read: props.read})}
+                {renderInput({ label: 'Created', name: 'created', read: read })}
+                {renderInput({ label: 'Updated', name: 'updated', read: read})}
+                {renderInput({ label: 'Title', name: 'title', read: read})}
+                {renderInput({ label: 'Description', name: 'description', read: read})}
+                {renderInput({ label: 'DueBy', name: 'dueBy', read: read})}
+                {renderInput({ label: 'Completed', name: 'completed', read: read})}
             </form>
         </div>
     );

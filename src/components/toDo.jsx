@@ -6,11 +6,11 @@ import AddForm from './addForm';
 import ViewForm from './viewForm';
 import EditForm from './editForm';
 import { getTodoList, deleteTodo, completeTodo, getTodo } from '../services/todoService';
-
+import { formatDate } from './common/formatDate';
 
 function ToDo() {
 
-  const [todo, setTodo] = useState([]);
+  const [todo, setTodo] = useState([{ id: '', title: '', updated: '', dueBy: '', completed: '' }]);
   const [showAdd, setShowAdd] = useState(false);
   const [showDel, setShowDel] = useState(false);
   const [showView, setShowView] = useState(false); 
@@ -20,13 +20,27 @@ function ToDo() {
   const dataFetch = async () => {
    
     const data = await getTodoList();
-    setTodo(data);
-   
+    const newData = [...data];
+    for (let key of newData)
+    {     
+      key.updated = formatDate(key.updated);
+      
+      if (key.dueBy)
+        key.dueBy = formatDate(key.dueBy);
+    }
+    setTodo(newData);
   }; 
   
   const handleView = async (todo) => {
     const todo_id = await getTodo(todo.todo.id);
-    setData(todo_id);
+    const newTodo = [...todo_id];
+
+    newTodo.updated = formatDate(newTodo.updated);
+    newTodo.created = formatDate(newTodo.created);
+    if (newTodo.dueBy)
+       newTodo.dueBy = formatDate(newTodo.dueBy);
+    
+    setData(newTodo);
     setShowView(true);
 
   }
@@ -77,9 +91,7 @@ function ToDo() {
   };
   
   const handleSave = async () => {
-    
-  dataFetch();
-   
+    dataFetch();
   }
 
  

@@ -33,7 +33,7 @@ function ToDo() {
   
   const handleView = async (todo) => {
     const todo_id = await getTodo(todo.todo.id);
-    const newTodo = [...todo_id];
+    const newTodo = { ...todo_id };
 
     newTodo.updated = formatDate(newTodo.updated);
     newTodo.created = formatDate(newTodo.created);

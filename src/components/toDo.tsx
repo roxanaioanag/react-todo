@@ -1,74 +1,94 @@
-import React from 'react';
-import { useState, useEffect } from 'react';
+import React, { FC,  useState, useEffect } from 'react';
 import ToDoTable from './toDoTable';
-import ModalDialog from './common/modalDialog';
 import AddForm from './addForm';
 import ViewForm from './viewForm';
 import EditForm from './editForm';
+import ModalDialog from './common/modalDialog';
 import { getTodoList, deleteTodo, completeTodo, getTodo } from '../services/todoService';
 import { formatDate } from './common/formatDate';
+import { TodoList, Todo } from '../datastructure';
 
-function ToDo() {
 
-  const [todo, setTodo] = useState([{ id: '', title: '', updated: '', dueBy: '', completed: '' }]);
-  const [showAdd, setShowAdd] = useState(false);
-  const [showDel, setShowDel] = useState(false);
-  const [showView, setShowView] = useState(false); 
-  const [showEdit, setShowEdit] = useState(false);
-  const [data, setData] = useState({});
+const ToDo : FC = () => {
+
+  const [todo, setTodo] = useState<TodoList[]>([
+    {
+    id: '',
+    title: '',
+    updated: '',
+    dueBy: '',
+    completed: false
+    }]);
+  const [showAdd, setShowAdd] = useState<boolean>(false);
+  const [showDel, setShowDel] = useState<boolean>(false);
+  const [showView, setShowView] = useState<boolean>(false);
+  const [showEdit, setShowEdit] = useState<boolean>(false);
+  const [data, setData] = useState<Todo>(
+    {
+    id: '',
+    created: '',
+    updated: '',
+    title: '',
+    description: '',
+    dueBy: '',
+      completed: false
+    });
+
+ 
  
   const dataFetch = async () => {
    
     const data = await getTodoList();
+
     const newData = [...data];
     for (let key of newData)
     {     
       key.updated = formatDate(key.updated);
-      
-      if (key.dueBy)
+     if (key.dueBy)
         key.dueBy = formatDate(key.dueBy);
     }
+    
     setTodo(newData);
   }; 
   
-  const handleView = async (todo) => {
-    const todo_id = await getTodo(todo.todo.id);
+  const handleView = async({ todo } : {todo: Todo} ) => {
+    const todo_id = await getTodo(todo.id);
+    
     const newTodo = { ...todo_id };
 
     newTodo.updated = formatDate(newTodo.updated);
     newTodo.created = formatDate(newTodo.created);
     if (newTodo.dueBy)
        newTodo.dueBy = formatDate(newTodo.dueBy);
-    
     setData(newTodo);
     setShowView(true);
 
   }
 
-  const handleEdit = async (todo) => {
-    const todo_id = await getTodo(todo.todo.id);
-    setData(todo_id);
+  const handleEdit = async ({ todo } : {todo: Todo}) => {
+    const todo_id = await getTodo(todo.id);
+    const newTodo = { ...todo_id };
+    setData(newTodo);
     setShowEdit(true);
 
    }
 
-  const handleComplete = async (todo) => {
+  const handleComplete = async ({ todo } : {todo: Todo}) => {
     
     try {
-      if (!todo.todo.completed)
-        await completeTodo(todo.todo.id);
+      if (!todo.completed)
+        await completeTodo(todo.id);
       
     }
-    catch (ex)
+    catch (error)
     {
-        if (ex.response && ex.response.status === 400)
-            console.log('Todo already completed');
+            console.log(error);
     }
     dataFetch();
   
   }
   
-  const handleShowDel = todo => {
+  const handleShowDel = ({ todo } : {todo: Todo}) => {
     setShowDel(true);
     setData(todo);
    }
@@ -79,12 +99,11 @@ function ToDo() {
   const handleDelete = async () => {
        
     try {
-        await deleteTodo(data.todo.id);
+        await deleteTodo(data.id);
     }
-    catch (ex)
+    catch (error)
     {
-        if (ex.response && ex.response.status === 400)
-            console.log('Bad request');
+            console.log(error);
     }
     dataFetch();
     setShowDel(false);

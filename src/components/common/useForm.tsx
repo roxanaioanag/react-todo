@@ -1,24 +1,27 @@
-import React from 'react';
+import React, { FormEventHandler } from 'react';
 import Joi from "joi";
 import Input from './input';
+import type { Rule, ErrorType } from '../../datastructure';
+import { InputProps } from '../../datastructure';
 
-function useForm({ schema, doSubmit, todo, setTodo, error, setError, handleClick }) {
+
+function useForm ({ schema, doSubmit, todo, setTodo, error, setError, handleClick } : Rule)  {
     
-
-    const validation = () => {
+    const validation = () : ErrorType | null => {
         const options = { abortEarly: false };
         const { error } = schema?.validate(todo, options);
         if (!error) return null;
     
-        const errors = {};
-        for (let item of error?.details) {
-          errors[item?.path[0]] = item?.message;
-        }
+
+        const errors : ErrorType = {};
+         for (let item of error?.details) {
+           errors[item?.path[0]] = item?.message;
+         }
 
         return errors;
     }
 
-    const validateProperty = ({ name, value }) => {
+    const validateProperty = ({ name , value } : { name:string, value:string}) : string | null => {
         const rule = schema?.extract(name);
         const propertySchema = Joi.object({
           [name]: rule
@@ -30,7 +33,7 @@ function useForm({ schema, doSubmit, todo, setTodo, error, setError, handleClick
 
     }
 
-    const handleSubmit = (e) => {
+    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) : FormEventHandler<HTMLFormElement> | undefined=> {
         e.preventDefault();
 
         setError(validation() || {});
@@ -39,10 +42,10 @@ function useForm({ schema, doSubmit, todo, setTodo, error, setError, handleClick
         doSubmit();
     }
 
-    const handleChange = ({ currentTarget: input }) => {
+    const handleChange = ({ currentTarget: input } : { currentTarget: HTMLInputElement }): void => {
         const errors = { ...error };
         const errorMessage = validateProperty(input);
-        
+                
         if (errorMessage) errors[input.name] = errorMessage;
         else
             delete errors[input.name];
@@ -53,22 +56,23 @@ function useForm({ schema, doSubmit, todo, setTodo, error, setError, handleClick
       
     };
 
-    const renderButton = (label) => {
+    const renderButton = (label : string) : JSX.Element => {
         
         return (
             <button disabled={validation() === null ? false : true} className="btn btn-primary mt-4 w-100" type='submit' onClick={handleClick}>{label}</button>
         );
     };
 
-    const renderInput = ({ label, name, type = "text", read = '' }) => {     
+    const renderInput = ({ label, name, type = 'text', read = false }: InputProps): JSX.Element => {  
+  
         return (
             <Input
                 type={type}
                 name={name}
-                value={todo[name] === null ? ""  : todo[name] }
+                value={todo[name as keyof object] ? todo[name as keyof object] : '' }
                 label={label}
                 onChange={handleChange}
-                error={error[name]}
+                error={error[name as keyof object]}
                 readOnly={read ? true : false}
             />
         );

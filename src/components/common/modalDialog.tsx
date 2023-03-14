@@ -1,8 +1,17 @@
-import React  from 'react';
+import React , { ReactNode, MouseEventHandler, ReactElement, FC  } from 'react';
 import { Modal, Button } from 'react-bootstrap';
 
+type Props = {
+  show: boolean,
+  title: string,
+  children: ReactNode,
+  btnVisible?: boolean, 
+  onAction?: MouseEventHandler,
+  onHide: MouseEventHandler
+}
 
-function ModalDialog({show, title, children, btnVisible, onAction, onHide}) {
+
+const ModalDialog  :FC<Props> = ({show, title, children, btnVisible, onAction, onHide}) : ReactElement => {
  
 
   return (

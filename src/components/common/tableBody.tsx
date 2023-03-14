@@ -1,19 +1,26 @@
-import React from 'react';
-import _ from 'lodash';
+import React, { FC, ReactElement } from 'react';
+import _ from "lodash";
+import type { TodoList, ColumnElement } from './../../datastructure';
 
-function TableBody({ data, columns }) { 
 
-    const renderCell = (item, column) => {   
+type Props = {
+    data: TodoList[],
+    columns: ColumnElement[]
+}
+
+const TableBody : FC<Props> = ({ data, columns }) : ReactElement => { 
+
+    const renderCell = (item: TodoList, column: ColumnElement) => {   
    
         if (column.content) return column.content(item);
        
-       
+       if(column.path)
         return typeof (_.get(item, column.path)) === 'boolean' ? _.get(item, column.path).toString() : _.get(item, column.path);
     }
 
-    const  createKey = (item, column) => {
+    const  createKey = (item: TodoList, column: ColumnElement) => {
      
-        return item.id + (column.path || column.key);
+        return item.id + (column.label || column.key);
     }
 
    

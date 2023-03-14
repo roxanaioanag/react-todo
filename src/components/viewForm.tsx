@@ -1,24 +1,22 @@
-import React from 'react';
-import { useState } from 'react';
+import React, { FC, useState, ReactElement, useEffect, MouseEventHandler } from 'react';
 import Joi from "joi";
 import useForm from './common/useForm';
-import { useEffect } from 'react';
+import { Rule, Todo } from '../datastructure';
 
-function ViewForm({data, read, onClick}) {
+type Props = {
+    data: Todo,
+    read: boolean,
+    onClick: MouseEventHandler<Element>
+}
 
-    const [todo, setTodo] = useState({
-        id: "",
-        created: "",
-        updated: "",
-        title: "",
-        description: "",
-        dueBy: "",
-        completed: ""
-    });
+
+const ViewForm : FC<Props> = ({data, read, onClick}) : ReactElement => {
+
+    const [todo, setTodo] = useState<object>({});
 
     const [error, setError] = useState({});
 
-    const rule = {
+    const rule : Rule = {
         schema: Joi.object({
             id: Joi.string().label('Id'),
             created: Joi.string().label('Created'),

@@ -1,26 +1,32 @@
-import React from 'react';
-import { useState } from 'react';
+import React, { FC, MouseEventHandler, ReactElement, useState, useEffect  } from 'react';
 import Joi from "joi";
 import useForm from './common/useForm';
 import { editTodo } from '../services/todoService';
-import { useEffect } from 'react';
+import { Rule, Todo } from '../datastructure';
 
+type Props = {
+    data: Todo,
+    onSubmit: Function,
+    onClick: MouseEventHandler<Element>
+}
 
-function EditForm({data, onSubmit, onClick}) {
+const EditForm : FC<Props> = ({data, onSubmit, onClick}) : ReactElement => {
 
-    const [todo, setTodo] = useState({
-        id: "",
-        created: "",
-        updated: "",
-        title: "",
-        description: "",
-        dueBy: "",
-        completed: ""
-    });
+    const [todo, setTodo] = useState<Todo>(
+        {
+        id: '',
+        created: '',
+        updated: '',
+        title: '',
+        description: '',
+        dueBy: '',
+        completed: false
+        });
+    
 
     const [error, setError] = useState({});
 
-    const rule = {
+    const rule : Rule = {
         schema: Joi.object({
             id: Joi.string().allow("").label('Id'),
             created: Joi.string().allow("").label('Created'),
@@ -32,6 +38,7 @@ function EditForm({data, onSubmit, onClick}) {
         }),
         doSubmit: async () => {
             await editTodo(todo);
+           
             onSubmit();
           },
         todo,

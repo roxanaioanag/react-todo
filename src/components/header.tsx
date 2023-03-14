@@ -1,10 +1,11 @@
-import logo from '../logo.svg';
+import React, { FC } from 'react';
 
-function Header() {
+const Header : FC = () => {
+    
     return (
         <header>
             <div className='logo'>
-                <img src={logo} alt="React Todo logo" />
+               
                 <span>React Todo</span>
             </div>
             

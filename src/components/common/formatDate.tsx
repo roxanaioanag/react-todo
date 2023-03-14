@@ -1,6 +1,10 @@
-export const formatDate = (newDate) => {
+import { Months } from "../../datastructure";
 
-    const months = {
+
+export const formatDate  = (newDate: string) => {
+
+
+    const months : Months = {
         0: 'January',
         1: 'February',
         2: 'March',
